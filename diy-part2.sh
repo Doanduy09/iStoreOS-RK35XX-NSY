@@ -33,6 +33,20 @@ cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3566-jp-tvbox.dts target/linux/rockchi
 
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3566-panther-x2.dts target/linux/rockchip/dts/rk3568/rk3566-panther-x2.dts
 
+echo "src-git all https://github.com/kiddin9/kwrt-packages.git" >> feeds.conf.default
+echo "src-git qmodem https://github.com/FUjr/QModem.git;main" >> feeds.conf.default
+./scripts/feeds update -a
+./scripts/feeds install -a
+mkdir -p package/network/utils/modemdata
+git clone https://github.com/obsy/modemdata.git package/network/utils/modemdata
+mkdir -p package/luci/luci-app-modemdata
+git clone https://github.com/4IceG/luci-app-modemdata.git package/luci/luci-app-modemdata
+echo "src-git modemdata https://github.com/obsy/modemdata.git" >> feeds.conf.default
+echo "src-git luci_app_modemdata https://github.com/4IceG/luci-app-modemdata.git" >> feeds.conf.default
+./scripts/feeds update -a
+./scripts/feeds install modemdata
+./scripts/feeds install luci-app-modemdata
+
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-dg-nas-lite-core.dtsi target/linux/rockchip/dts/rk3568/rk3568-dg-nas-lite-core.dtsi
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-dg-nas-lite.dts target/linux/rockchip/dts/rk3568/rk3568-dg-nas-lite.dts
 
